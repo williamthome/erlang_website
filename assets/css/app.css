@@ -1,4 +1,40 @@
 @import "tailwindcss";
-@import "./arizona.css";
 
 @source "src/**/*.erl";
+
+@theme {
+  /* Erlang Brand Colors */
+  --color-erlang-red: #DC2626;
+  --color-erlang-red-dark: #B91C1C;
+  --color-erlang-red-light: #EF4444;
+  --color-erlang-gray: #374151;
+  --color-erlang-gray-light: #6B7280;
+  --color-erlang-blue: #3B82F6;
+  --color-erlang-green: #10B981;
+}
+
+/* Custom utilities */
+.text-erlang-red { color: var(--color-erlang-red); }
+.text-erlang-red-dark { color: var(--color-erlang-red-dark); }
+.text-erlang-red-light { color: var(--color-erlang-red-light); }
+.text-erlang-gray { color: var(--color-erlang-gray); }
+.text-erlang-gray-light { color: var(--color-erlang-gray-light); }
+.text-erlang-blue { color: var(--color-erlang-blue); }
+.text-erlang-green { color: var(--color-erlang-green); }
+
+.bg-erlang-red { background-color: var(--color-erlang-red); }
+.bg-erlang-red-dark { background-color: var(--color-erlang-red-dark); }
+.bg-erlang-red-light { background-color: var(--color-erlang-red-light); }
+.bg-erlang-gray { background-color: var(--color-erlang-gray); }
+.bg-erlang-gray-light { background-color: var(--color-erlang-gray-light); }
+.bg-erlang-blue { background-color: var(--color-erlang-blue); }
+.bg-erlang-green { background-color: var(--color-erlang-green); }
+
+.border-erlang-red { border-color: var(--color-erlang-red); }
+.border-erlang-red-dark { border-color: var(--color-erlang-red-dark); }
+.border-erlang-red-light { border-color: var(--color-erlang-red-light); }
+
+/* Smooth transitions */
+.transition-smooth {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}

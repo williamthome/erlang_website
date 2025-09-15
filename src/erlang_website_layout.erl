@@ -4,42 +4,40 @@
 
 render(Bindings) ->
     Description = [
-        ~"Arizona - A modern Erlang web framework for building scalable, ",
-        ~"fault-tolerant real-time applications on the BEAM"
+        ~"Erlang - Practical functional programming for a parallel world. ",
+        ~"Build massively scalable soft real-time systems with fault tolerance."
     ],
-    Image = ~"images/arizona-hero-bg.jpg",
     arizona_template:from_string(~"""
     <!DOCTYPE html>
-    <html lang="en" class="h-full">
+    <html lang="en" class="h-full scroll-smooth">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="{Description}">
-        <meta name="keywords" content="Erlang, BEAM, web framework, real-time, WebSocket, fault-tolerant, scalable">
-        <meta name="author" content="Arizona Framework">
+        <meta name="keywords" content="Erlang, BEAM, OTP, functional programming, concurrent, fault-tolerant, scalable, real-time">
+        <meta name="author" content="Erlang Programming Language">
 
         {% Open Graph / Facebook }
         <meta property="og:type" content="website">
         <meta property="og:title" content="{arizona_template:get_binding(title, Bindings)}">
         <meta property="og:description" content="{Description}">
-        <meta property="og:image" content="{Image}">
 
         {% Twitter }
         <meta property="twitter:card" content="summary_large_image">
         <meta property="twitter:title" content="{arizona_template:get_binding(title, Bindings)}">
         <meta property="twitter:description" content="{Description}">
-        <meta property="twitter:image" content="{Image}">
 
         <title>{arizona_template:get_binding(title, Bindings)}</title>
         <link rel="icon" type="image/x-icon" href="favicon.ico">
         <link rel="stylesheet" href="assets/app.css">
         <script type="module" src="assets/app.js" defer></script>
 
-        {% Preload critical fonts if using custom fonts }
+        {% Modern fonts }
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
     </head>
-    <body class="bg-obsidian text-pearl antialiased">
+    <body class="bg-gray-950 text-gray-100 antialiased font-['Inter'] min-h-screen">
         {arizona_template:render_slot(arizona_template:get_binding(main_content, Bindings))}
     </body>
     </html>
