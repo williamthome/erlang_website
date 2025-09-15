@@ -64,8 +64,8 @@ header(_Bindings) ->
             <div class="flex items-center justify-between">
                 {% Logo }
                 <div class="flex items-center space-x-3">
-                    <div class="w-8 h-8 bg-erlang-red rounded-lg flex items-center justify-center">
-                        <span class="text-white font-bold text-lg">E</span>
+                    <div class="w-8 h-8 bg-erlang-red flex items-center justify-center">
+                        <img src="images/erlang-logo.svg" alt="Erlang Programming Language" class="w-full h-full object-contain" style="filter: brightness(0) saturate(100%) invert(100%);" />
                     </div>
                     <span class="text-xl font-bold text-white">Erlang</span>
                 </div>
