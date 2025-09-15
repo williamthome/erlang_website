@@ -9,6 +9,7 @@
 -export([hero/1]).
 -export([hero_button/1]).
 -export([code_showcase/1]).
+-export([carousel_item/1]).
 -export([what_is_erlang/1]).
 -export([what_is_otp/1]).
 -export([news_section/1]).
@@ -186,8 +187,72 @@ hero(_Bindings) ->
     """").
 
 code_showcase(_Bindings) ->
-    arizona_template:from_string(~"""
-    <div class="relative bg-gray-900 rounded-2xl border border-gray-700 overflow-hidden shadow-2xl">
+    Module = ?MODULE,
+    Examples = [
+        #{
+            index => 1,
+            file => ~"factorial.erl",
+            label => ~"Functional programming",
+            code => arizona_template:from_string(~"""
+                <span class="text-gray-400">%% Pattern matching for control-flow</span>
+                <span class="text-erlang-blue">fact</span>(<span class="text-yellow-400">0</span>) -> <span class="text-yellow-400">1</span>;
+                <span class="text-erlang-blue">fact</span>(<span class="text-blue-400">N</span>) -> <span class="text-blue-400">N</span> * <span class="text-erlang-blue">fact</span>(<span class="text-blue-400">N</span>-<span class="text-yellow-400">1</span>).
+
+                <span class="text-gray-400">%% Recursion to create loops</span>
+                <span class="text-gray-500">></span> <span class="text-erlang-blue">fact</span>(<span class="text-yellow-400">10</span>).
+                <span class="text-yellow-400">3628800</span>
+                <span class="text-gray-500">></span> [\{<span class="text-blue-400">I</span>, <span class="text-erlang-blue">fact</span>(<span class="text-blue-400">I</span>)} || <span class="text-blue-400">I</span> <- <span class="text-erlang-blue">lists:seq</span>(<span class="text-yellow-400">1</span>,<span class="text-yellow-400">10</span>)].
+                <span class="text-gray-300">[\{1, 1}, \{2, 2}, \{3, 6}, \{4, 24}, \{5, 120}, \{6, 720},
+                 \{7, 5040}, \{8, 40320}, \{9, 362880}, \{10, 3628800}]</span>
+                """)
+        },
+        #{
+            index => 2,
+            file => ~"even.erl",
+            label => ~"Find even numbers",
+            code => arizona_template:from_string(~"""
+                <span class="text-gray-400">-spec even(In) -> Out</span>
+                    <span class="text-gray-400">when In :: list(integer()),</span>
+                         <span class="text-gray-400">Out :: list(integer()).</span>
+                <span class="text-erlang-blue">even</span>(<span class="text-blue-400">Numbers</span>) ->
+                    [<span class="text-blue-400">Number</span> || <span class="text-blue-400">Number</span> <- <span class="text-blue-400">Numbers</span>,
+                     <span class="text-blue-400">Number</span> <span class="text-erlang-blue">rem</span> <span class="text-yellow-400">2</span> == <span class="text-yellow-400">0</span>].
+
+                <span class="text-gray-500">></span> <span class="text-erlang-blue">even</span>([<span class="text-yellow-400">1</span>,<span class="text-yellow-400">2</span>,<span class="text-yellow-400">3</span>,<span class="text-yellow-400">4</span>,<span class="text-yellow-400">5</span>,<span class="text-yellow-400">6</span>,<span class="text-yellow-400">7</span>,<span class="text-yellow-400">8</span>,<span class="text-yellow-400">9</span>,<span class="text-yellow-400">10</span>]).
+                <span class="text-gray-300">[2,4,6,8,10]</span>
+                """)
+        },
+        #{
+            index => 3,
+            file => ~"concurrent.erl",
+            label => ~"Concurrent processes",
+            code => arizona_template:from_string(~"""
+                <span class="text-gray-400">%% Spawn multiple processes</span>
+                <span class="text-erlang-blue">mapreduce</span>(<span class="text-blue-400">Numbers</span>, <span class="text-blue-400">Function</span>) ->
+                    <span class="text-blue-400">Parent</span> = <span class="text-erlang-blue">self</span>(),
+                    [<span class="text-erlang-blue">spawn</span>(<span class="text-gray-400">fun</span>() -> <span class="text-blue-400">Parent</span> ! \{<span class="text-blue-400">Number</span>, <span class="text-blue-400">Function</span>(<span class="text-blue-400">Number</span>)} <span class="text-gray-400">end</span>) || <span class="text-blue-400">Number</span> <- <span class="text-blue-400">Numbers</span>],
+                    <span class="text-erlang-blue">lists:flatten</span>(
+                        [<span class="text-gray-400">receive</span> \{<span class="text-blue-400">Number</span>, <span class="text-erlang-blue">true</span>} -> <span class="text-blue-400">Number</span>; <span class="text-gray-400">_</span> -> [] <span class="text-gray-400">end</span> || <span class="text-blue-400">Number</span> <- <span class="text-blue-400">Numbers</span>]).
+
+                <span class="text-gray-500">></span> <span class="text-erlang-blue">mapreduce</span>([<span class="text-yellow-400">1</span>,<span class="text-yellow-400">2</span>,<span class="text-yellow-400">3</span>,<span class="text-yellow-400">4</span>], <span class="text-gray-400">fun</span>(<span class="text-blue-400">N</span>) -> <span class="text-blue-400">N</span> <span class="text-erlang-blue">rem</span> <span class="text-yellow-400">2</span> == <span class="text-yellow-400">0</span> <span class="text-gray-400">end</span>).
+                <span class="text-gray-300">[2,4]</span>
+                """)
+        }
+    ],
+    arizona_template:from_string(~""""
+    <div class="relative bg-gray-900 rounded-2xl border border-gray-700 overflow-hidden shadow-2xl" id="code-carousel">
+        {% Navigation Arrows }
+        <button class="carousel-arrow absolute left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-gray-800 hover:bg-gray-700 rounded-full flex items-center justify-center text-white transition-smooth" onclick="prevExample()">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+        </button>
+        <button class="carousel-arrow absolute right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-gray-800 hover:bg-gray-700 rounded-full flex items-center justify-center text-white transition-smooth" onclick="nextExample()">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+        </button>
+
         {% Terminal Header }
         <div class="flex items-center px-6 py-4 bg-gray-800 border-b border-gray-700">
             <div class="flex space-x-2">
@@ -195,34 +260,54 @@ code_showcase(_Bindings) ->
                 <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
                 <div class="w-3 h-3 bg-green-500 rounded-full"></div>
             </div>
-            <div class="flex-1 text-center text-gray-400 text-sm font-mono">factorial.erl</div>
+            <div class="flex-1 text-center text-gray-400 text-sm font-mono" id="file-name">{maps:get(file, hd(Examples))}</div>
         </div>
 
         {% Code Content }
-        <div class="p-3 sm:p-6 overflow-x-auto">
-            <pre class="text-xs sm:text-sm leading-relaxed"><code class="language-erlang whitespace-pre"><span class="text-gray-400">%% Pattern matching for control-flow</span>
-    <span class="text-erlang-blue">fact</span>(<span class="text-yellow-400">0</span>) -> <span class="text-yellow-400">1</span>;
-    <span class="text-gray-400">%% Interactive shell for fast iterations</span>
-    <span class="text-erlang-blue">fact</span>(<span class="text-blue-400">N</span>) -> <span class="text-blue-400">N</span> * <span class="text-erlang-blue">fact</span>(<span class="text-blue-400">N</span>-<span class="text-yellow-400">1</span>).
+        <div class="relative overflow-hidden">
+            <div class="carousel-slides" id="carousel-slides">
+                {arizona_template:render_list(fun(#{index := Index} = Example) ->
+                    OverflowClass = case Index of
+                        0 -> ~"overflow-x-auto";
+                        _ -> ~"overflow-hidden"
+                    end,
+                    arizona_template:from_string(~"""
+                    {arizona_template:render_stateless(Module, carousel_item, Example#{overflow_class => OverflowClass})}
+                    """)
+                end, Examples)}
+            </div>
+        </div>
 
-    <span class="text-gray-400">%% Recursion to create loops</span>
-    <span class="text-gray-500">></span> <span class="text-erlang-blue">fact</span>(<span class="text-yellow-400">10</span>).
-    <span class="text-yellow-400">3628800</span>
-    <span class="text-gray-500">></span> [\{<span class="text-blue-400">I</span>, <span class="text-erlang-blue">fact</span>(<span class="text-blue-400">I</span>)} || <span class="text-blue-400">I</span> <- <span class="text-erlang-blue">lists:seq</span>(<span class="text-yellow-400">1</span>,<span class="text-yellow-400">10</span>)].
-    <span class="text-gray-300">[\{1, 1}, \{2, 2}, \{3, 6}, \{4, 24}, \{5, 120}, \{6, 720},
-     \{7, 5040}, \{8, 40320}, \{9, 362880}, \{10, 3628800}]</span></code></pre>
+        {% Dots Navigation }
+        <div class="flex justify-center space-x-2 p-4 bg-gray-850">
+            {arizona_template:render_list(fun(#{index := Index} = _Example) ->
+                DotClass = case Index of
+                    0 -> ~"carousel-dot active w-2 h-2 bg-erlang-red rounded-full transition-smooth";
+                    _ -> ~"carousel-dot w-2 h-2 bg-gray-600 rounded-full transition-smooth"
+                end,
+                arizona_template:from_string(~"""
+                <button class="{DotClass}" onclick="goToExample({integer_to_binary(Index)})"></button>
+                """)
+            end, Examples)}
         </div>
 
         {% Label }
-        <div class="px-3 sm:px-6 mb-4 sm:mb-6">
+        <div class="px-3 sm:px-6 py-2 sm:py-4">
             <div class="flex justify-center">
-                <div class="bg-erlang-red px-2 sm:px-3 py-1 rounded-full text-white text-xs font-semibold">
-                    Functional programming
+                <div class="bg-erlang-red px-2 sm:px-3 py-1 rounded-full text-white text-xs font-semibold" id="example-label">
+                    {maps:get(label, hd(Examples))}
                 </div>
             </div>
         </div>
     </div>
-    """).
+    """").
+
+carousel_item(Bindings) ->
+    arizona_template:from_string(~""""
+    <div class="carousel-slide p-3 sm:p-6 {arizona_template:get_binding(overflow_class, Bindings)}" data-file="{arizona_template:get_binding(file, Bindings)}" data-label="{arizona_template:get_binding(label, Bindings)}">
+        <pre class="text-xs sm:text-sm leading-relaxed"><code class="language-erlang whitespace-pre">{arizona_template:get_binding(code, Bindings)}</code></pre>
+    </div>
+    """").
 
 what_is_erlang(_Bindings) ->
     Module = ?MODULE,

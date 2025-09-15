@@ -30,6 +30,11 @@ render(Bindings) ->
         <title>{arizona_template:get_binding(title, Bindings)}</title>
         <link rel="icon" type="image/x-icon" href="favicon.ico">
         <link rel="stylesheet" href="assets/app.css">
+        <script type="module" async>
+            import Arizona from '@arizona-framework/client';
+            globalThis.arizona = new Arizona(\{ logLevel: 'debug' });
+            arizona.connect(\{ wsPath: '/live' });
+        </script>
         <script type="module" src="assets/app.js" defer></script>
 
         {% Modern fonts }
