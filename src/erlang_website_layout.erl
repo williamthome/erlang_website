@@ -79,7 +79,7 @@ header(_Bindings) ->
                 {arizona_template:render_stateless(Module, erlang_logo, #{})}
 
                 {% Navigation Links }
-                <div class="hidden md:flex items-center space-x-8">
+                <div class="hidden xl:flex items-center space-x-6">
                     {arizona_template:render_list(fun(NavItem) ->
                         arizona_template:from_string(~"""
                         {arizona_template:render_stateless(erlang_website_components, link, NavItem#{
@@ -89,11 +89,36 @@ header(_Bindings) ->
                     end, navigation_links())}
                 </div>
 
+                {% Search Input }
+                <div class="hidden md:flex items-center lg:flex-1 lg:justify-end xl:flex-none xl:justify-start">
+                    <div class="relative">
+                        <input
+                            type="search"
+                            placeholder="Search erlang.org"
+                            class="{[
+                                ~"w-48 lg:w-56 xl:w-64 pl-4 pr-10 py-2 bg-gray-800 border border-gray-700 rounded-lg ",
+                                ~"text-gray-300 placeholder-gray-500 focus:outline-none focus:ring-2 ",
+                                ~"focus:ring-erlang-red focus:border-transparent transition-smooth"
+                            ]}"
+                        />
+                        <button
+                            type="submit"
+                            class="{[
+                                ~"absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 ",
+                                ~"hover:text-erlang-red transition-smooth"
+                            ]}"
+                        >
+                            {arizona_template:render_stateless(erlang_website_components, icon, #{icon => search})}
+                        </button>
+                    </div>
+                </div>
+
                 {% Mobile Menu Button }
                 {arizona_template:render_stateless(erlang_website_components, button, #{
                     id => ~"hamburger-button",
                     variant => secondary,
-                    icon => bars
+                    icon => bars,
+                    extra_classes => ~"inline-flex xl:hidden"
                 })}
             </div>
         </nav>

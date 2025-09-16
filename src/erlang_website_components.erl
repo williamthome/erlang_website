@@ -30,7 +30,11 @@ link_button(Bindings) ->
     arizona_template:from_string(~"""
     <a
         href="{arizona_template:get_binding(href, Bindings)}"
-        class="{button_classes(arizona_template:get_binding(variant, Bindings, primary))}"
+        class="{[
+            button_classes(arizona_template:get_binding(variant, Bindings, primary)),
+            ~" ",
+            arizona_template:get_binding(extra_classes, Bindings, ~"inline-flex")
+        ]}"
     >
         {arizona_template:get_binding(label, Bindings)}
         {case arizona_template:find_binding(icon, Bindings) of
@@ -50,7 +54,7 @@ button(Bindings) ->
         class="{[
             button_classes(arizona_template:get_binding(variant, Bindings, primary)),
             ~" ",
-            arizona_template:get_binding(extra_classes, Bindings, ~"")
+            arizona_template:get_binding(extra_classes, Bindings, ~"inline-flex")
         ]}"
     >
         {arizona_template:get_binding(label, Bindings, ~"")}
@@ -92,7 +96,7 @@ card(Bindings) ->
 
 button_classes(Variant) ->
     [
-        ~"inline-flex items-center justify-center transition-smooth ",
+        ~"items-center justify-center transition-smooth ",
         ~"px-8 py-4 font-semibold rounded-lg cursor-pointer ",
         button_variant_classes(Variant)
     ].
@@ -101,7 +105,7 @@ button_variant_classes(primary) ->
     ~"text-white hover:shadow-lg [&:hover]:bg-erlang-red-dark [&:not(:hover)]:bg-erlang-red";
 button_variant_classes(secondary) ->
     [
-        ~"md:hidden text-gray-300 hover:text-white hover:bg-gray-700 ",
+        ~"text-gray-300 hover:text-white hover:bg-gray-700 ",
         ~"border border-transparent hover:border-gray-600"
     ];
 button_variant_classes(outline) ->
@@ -136,4 +140,6 @@ icon_path(twitter) ->
 icon_path(chevron_left) ->
     ~"M15 19l-7-7 7-7";
 icon_path(chevron_right) ->
-    ~"M9 5l7 7-7 7".
+    ~"M9 5l7 7-7 7";
+icon_path(search) ->
+    ~"M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z".

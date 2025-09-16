@@ -83,7 +83,8 @@ hero(_Bindings) ->
                         {arizona_template:render_stateless(erlang_website_components, link_button, #{
                             label => ~"Get Erlang/OTP 28",
                             href => ~"#",
-                            icon => download
+                            icon => download,
+                            extra_classes => ~"hidden sm:inline-flex"
                         })}
                         {arizona_template:render_stateless(erlang_website_components, link_button, #{
                             label => ~"Learn More",
