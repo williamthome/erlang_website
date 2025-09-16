@@ -78,7 +78,26 @@ globalThis.nextExample = nextExample;
 globalThis.prevExample = prevExample;
 globalThis.goToExample = goToExample;
 
-// Initialize carousel when DOM is loaded
+// Mobile menu toggle functionality
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobile-menu');
+  const button = document.getElementById('mobile-menu-button');
+  const hamburger = button?.querySelector('.hamburger-lines');
+
+  menu?.classList.toggle('show');
+  hamburger?.classList.toggle('active');
+}
+
+// Make mobile menu function global
+globalThis.toggleMobileMenu = toggleMobileMenu;
+
+// Initialize carousel and mobile menu when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
   showSlide(0);
+
+  // Set up mobile menu button click handler
+  const mobileMenuButton = document.getElementById('mobile-menu-button');
+  if (mobileMenuButton) {
+    mobileMenuButton.addEventListener('click', toggleMobileMenu);
+  }
 });

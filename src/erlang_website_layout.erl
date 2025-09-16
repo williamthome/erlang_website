@@ -73,7 +73,7 @@ header(_Bindings) ->
     Module = ?MODULE,
     arizona_template:from_string(~""""
     <header class="sticky top-0 z-50 bg-gray-950/95 backdrop-blur-sm border-b border-gray-800">
-        <nav class="max-w-7xl mx-auto px-6 py-4">
+        <nav class="max-w-7xl mx-auto px-6 py-4 relative z-50">
             <div class="flex items-center justify-between">
                 {% Logo }
                 {arizona_template:render_stateless(Module, erlang_logo, #{})}
@@ -113,15 +113,48 @@ header(_Bindings) ->
                     </div>
                 </div>
 
-                {% Mobile Menu Button }
-                {arizona_template:render_stateless(erlang_website_components, button, #{
-                    id => ~"hamburger-button",
-                    variant => secondary,
-                    icon => bars,
-                    extra_classes => ~"inline-flex xl:hidden"
-                })}
+                {% Mobile Menu Toggle }
+                <button
+                    id="mobile-menu-button"
+                    class="{[
+                        ~"xl:hidden relative z-50 flex items-center justify-center w-10 h-10 ",
+                        ~"text-gray-300 hover:text-white hover:bg-gray-700 ",
+                        ~"border border-transparent hover:border-gray-600 rounded-lg cursor-pointer ",
+                        ~"transition-smooth"
+                    ]}"
+                >
+                    <div class="hamburger-lines">
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                    </div>
+                </button>
             </div>
         </nav>
+
+        {% Mobile Menu }
+        <div
+            id="mobile-menu"
+            class="{[
+                ~"absolute inset-x-0 top-full z-40 bg-gray-950/95 backdrop-blur-sm border-b border-gray-800 ",
+                ~"xl:hidden transform transition-all duration-300 ease-in-out ",
+                ~"translate-y-[-100%] opacity-0"
+            ]}"
+        >
+            <nav class="max-w-7xl mx-auto px-6 py-4">
+                <div class="flex flex-col">
+                    {arizona_template:render_list(fun(NavItem) ->
+                        arizona_template:from_string(~"""
+                        <div class="py-3 px-2 border-b border-gray-800 last:border-b-0">
+                            {arizona_template:render_stateless(erlang_website_components, link, NavItem#{
+                                extra_classes => ~"block text-gray-300 hover:text-erlang-red"
+                            })}
+                        </div>
+                        """)
+                    end, navigation_links())}
+                </div>
+            </nav>
+        </div>
     </header>
     """").
 
