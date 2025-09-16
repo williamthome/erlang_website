@@ -3,16 +3,18 @@
 -compile({parse_transform, arizona_parse_transform}).
 -export([mount/2]).
 -export([render/1]).
-% Components
 -export([hero/1]).
--export([welcome_card/1]).
--export([enhanced_next_steps/1]).
--export([next_step/1]).
--export([quick_link_card/1]).
--export([arrow_icon/1]).
+-export([code_showcase/1]).
+-export([carousel_button/1]).
+-export([carousel_item/1]).
+-export([what_is_erlang/1]).
+-export([what_is_otp/1]).
+-export([news_section/1]).
+-export([news_article/1]).
+-export([participate_section/1]).
 
 mount(#{title := Title}, _Req) ->
-    Bindings = #{id => ~"view"},
+    Bindings = #{id => ~"home"},
     Layout =
         {erlang_website_layout, render, main_content, #{
             title => Title
@@ -21,279 +23,440 @@ mount(#{title := Title}, _Req) ->
 
 render(Bindings) ->
     Module = ?MODULE,
-    arizona_template:from_string(~""""
-    <div
-        id="{arizona_template:get_binding(id, Bindings)}"
-        class="min-h-screen relative overflow-hidden bg-arizona-landscape"
-    >
-        {% Subtle background elements }
-        <div class="absolute inset-0 opacity-5">
-            <div class="absolute top-20 left-20 w-72 h-72 bg-arizona-terracotta/10 rounded-full blur-3xl"></div>
-            <div class="absolute bottom-20 right-20 w-96 h-96 bg-pearl/5 rounded-full blur-3xl"></div>
-            <div class="absolute top-1/2 left-1/4 w-48 h-48 bg-arizona-gold/8 rounded-full blur-2xl"></div>
-        </div>
+    arizona_template:from_string(~"""
+    <div id="{arizona_template:get_binding(id, Bindings)}" class="min-h-screen">
+        {% Hero Section }
+        {arizona_template:render_stateless(Module, hero, #{})}
 
-        <div class="relative z-10 flex items-center justify-center min-h-screen p-4 sm:p-8">
-            <div class="max-w-6xl mx-auto">
-                {% Hero Section }
-                {arizona_template:render_stateless(Module, hero, #{})}
-
-                {% Welcome Card }
-                {arizona_template:render_stateless(Module, welcome_card, #{})}
-
-                {% Enhanced Next Steps }
-                {arizona_template:render_stateless(Module, enhanced_next_steps, #{})}
+        {% Main Content Grid }
+        <main class="max-w-7xl mx-auto px-6 py-16 grid lg:grid-cols-2 gap-16">
+            {% Left Column }
+            <div class="space-y-16">
+                {arizona_template:render_stateless(Module, news_section, #{})}
             </div>
-        </div>
+
+            {% Right Column }
+            <div class="space-y-16">
+                {arizona_template:render_stateless(Module, what_is_erlang, #{})}
+                {arizona_template:render_stateless(Module, what_is_otp, #{})}
+                {arizona_template:render_stateless(Module, participate_section, #{})}
+            </div>
+        </main>
     </div>
-    """").
+    """).
 
 hero(_Bindings) ->
-    arizona_template:from_string(~"""
-    <div class="text-center mb-16">
-        <div class="inline-block relative">
-            <h1 class="text-5xl sm:text-7xl lg:text-8xl font-bold text-pearl mb-8 leading-none">
-                <span class="{[
-                    ~"text-arizona-terracotta bg-gradient-to-r from-arizona-terracotta",
-                    ~"to-arizona-gold bg-clip-text text-transparent"
-                ]}">
-                    Arizona
-                </span>
-            </h1>
-            <div class="{[
-                ~"absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r ",
-                ~"from-arizona-terracotta to-arizona-gold rounded-full animate-expand"
-            ]}"></div>
-        </div>
-        <p class="text-xl sm:text-2xl text-silver max-w-2xl mx-auto leading-relaxed mt-8">
-            A modern Erlang web framework for
-            <span class="{[
-                ~"bg-gradient-to-r from-arizona-teal to-arizona-terracotta ",
-                ~"bg-clip-text text-transparent"
-            ]}">
-                real-time
-            </span>
-            applications
-        </p>
-    </div>
-    """).
-
-welcome_card(_Bindings) ->
     Module = ?MODULE,
     arizona_template:from_string(~""""
-    <div class="{[
-        ~"bg-charcoal/80 backdrop-blur-xl rounded-2xl p-8 sm:p-10 mb-16 shadow-2xl border ",
-        ~"border-pearl/10 hover:border-arizona-teal/40 hover:shadow-2xl ",
-        ~"hover:shadow-arizona-teal/10 transition-all duration-300"
-    ]}">
-        <div class="text-center mb-8">
-            <h2 class="{[
-                ~"text-3xl sm:text-4xl font-bold text-pearl mb-4 bg-gradient-to-r from-pearl ",
-                ~"to-silver bg-clip-text text-transparent"
-            ]}">
-                Welcome to your new Arizona project!
-            </h2>
-            <p class="text-lg text-silver/90 max-w-3xl mx-auto leading-relaxed">
-                Your application is running successfully. You're now ready to build
-                scalable, fault-tolerant real-time web applications on the BEAM.
-            </p>
+    <section class="relative bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 overflow-hidden">
+        {% Background Pattern }
+        <div class="absolute bg-grid-pattern opacity-5"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 lg:py-32">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                {% Left Column - Content }
+                <div class="text-center lg:text-left">
+                    <h1 class="{[
+                        ~"text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-white ",
+                        ~"mb-6 sm:mb-8 leading-tight"
+                    ]}">
+                        Practical
+                        <span class="text-erlang-red">functional</span>
+                        programming
+                        <span class="{[
+                            ~"block text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-gray-300 ",
+                            ~"mt-2 sm:mt-4"
+                        ]}">
+                            for a parallel world
+                        </span>
+                    </h1>
+
+                    <p class="{[
+                        ~"text-lg sm:text-xl text-gray-300 mb-8 sm:mb-10 leading-relaxed ",
+                        ~"max-w-2xl px-4 sm:px-0"
+                    ]}">
+                        Build massively scalable soft real-time systems with requirements on
+                        high availability using Erlang's fault-tolerant design.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        {arizona_template:render_stateless(erlang_website_components, link_button, #{
+                            label => ~"Get Erlang/OTP 28",
+                            href => ~"#",
+                            icon => download,
+                            extra_classes => ~"hidden sm:inline-flex"
+                        })}
+                        {arizona_template:render_stateless(erlang_website_components, link_button, #{
+                            label => ~"Learn More",
+                            href => ~"#",
+                            variant => outline
+                        })}
+                    </div>
+                </div>
+
+                {% Right Column - Code Showcase }
+                <div class="relative overflow-hidden">
+                    {arizona_template:render_stateless(Module, code_showcase, #{})}
+                </div>
+            </div>
+        </div>
+    </section>
+    """").
+
+code_showcase(_Bindings) ->
+    Module = ?MODULE,
+    arizona_template:from_string(~""""
+    <div
+        id="code-carousel"
+        class="relative bg-gray-900 rounded-2xl border border-gray-700 overflow-hidden shadow-2xl"
+    >
+        {% Navigation Arrows }
+        {arizona_template:render_stateless(Module, carousel_button, #{
+            class => ~"left-4",
+            icon => chevron_left,
+            onclick => ~"prevExample()"
+        })}
+        {arizona_template:render_stateless(Module, carousel_button, #{
+            class => ~"right-4",
+            icon => chevron_right,
+            onclick => ~"nextExample()"
+        })}
+
+        {% Terminal Header }
+        <div class="flex items-center px-6 py-4 bg-gray-800 border-b border-gray-700">
+            <div class="flex space-x-2">
+                {arizona_template:render_list(fun(Color) ->
+                    arizona_template:from_string(~"""
+                    <div class="w-3 h-3 {Color} rounded-full"></div>
+                    """)
+                end, [~"bg-red-500", ~"bg-yellow-500", ~"bg-green-500"])}
+            </div>
+            <div
+                id="file-name"
+                class="flex-1 text-center text-gray-400 text-sm font-mono"
+            >
+                {maps:get(file, hd(examples()))}
+            </div>
         </div>
 
-        {% Enhanced Quick Links Grid }
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {arizona_template:render_list(fun(Card) ->
+        {% Code Content }
+        <div class="relative overflow-hidden">
+            <div class="carousel-slides" id="carousel-slides">
+                {arizona_template:render_list(fun(#{index := Index} = Example) ->
+                    OverflowClass = case Index of
+                        0 -> ~"overflow-x-auto";
+                        _ -> ~"overflow-hidden"
+                    end,
+                    arizona_template:from_string(~"""
+                    {arizona_template:render_stateless(Module, carousel_item, Example#{
+                        overflow_class => OverflowClass
+                    })}
+                    """)
+                end, examples())}
+            </div>
+        </div>
+
+        {% Dots Navigation }
+        <div class="flex justify-center space-x-2 p-4 bg-gray-850">
+            {arizona_template:render_list(fun(#{index := Index} = _Example) ->
                 arizona_template:from_string(~"""
-                {arizona_template:render_stateless(Module, quick_link_card, Card)}
+                <button
+                    type="button"
+                    class="{[
+                        ~"carousel-dot w-2 h-2 rounded-full transition-smooth cursor-pointer ",
+                        case Index of 0 -> ~"bg-erlang-red active"; _ -> ~"bg-gray-600" end
+                    ]}"
+                    onclick="goToExample({Index})"
+                ></button>
                 """)
-            end, [
-                #{
-                    href => ~"https://github.com/arizona-framework/arizona/blob/main/README.md",
-                    icon => ~[<span class="text-2xl">📚</span>],
-                    title => ~"Documentation",
-                    description => ~"Learn how to build powerful applications with Arizona's comprehensive guides"
-                },
-                #{
-                    href => ~"https://github.com/arizona-framework/arizona/tree/main/test/support/e2e",
-                    icon => ~[<span class="text-2xl">🚀</span>],
-                    title => ~"Examples",
-                    description => ~"Explore sample applications and get inspired by real-world implementations"
-                },
-                #{
-                    href => ~"https://github.com/arizona-framework/arizona",
-                    icon => arizona_template:from_string(~"""
-                    <svg class="w-6 h-6 text-pearl" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="{[
-                            ~"M12 0C5.374 0 0 5.373 0 12 0 17.302 3.438 21.8 8.207 ",
-                            ~"23.387c.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.",
-                            ~"033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.",
-                            ~"729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.",
-                            ~"997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 ",
-                            ~"0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 ",
-                            ~"1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 ",
-                            ~"3.006.404 2.291-1.552 3.297-1.30 3.297-1.30.653 1.653.242 2.874.118 ",
-                            ~"3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 ",
-                            ~"5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 ",
-                            ~"21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"
-                        ]}"/>
-                    </svg>
-                    """),
-                    title => ~"GitHub",
-                    description => ~"View source code, report issues, and contribute to the Arizona framework",
-                    extra_classes => ~"sm:col-span-2 lg:col-span-1"
-                }
-            ])}
+            end, examples())}
         </div>
-    </div>
-    """").
 
-enhanced_next_steps(_Bindings) ->
-    Module = ?MODULE,
-    arizona_template:from_string(~""""
-    <div class="{[
-        ~"bg-gradient-to-r from-slate/10 via-charcoal/20 to-slate/10 ",
-        ~"backdrop-blur-sm rounded-2xl p-8 border border-pearl/10"
-    ]}">
-        <div class="flex items-center gap-3 mb-6">
-            <div class="{[
-                ~"w-8 h-8 bg-arizona-terracotta/20 rounded-lg ",
-                ~"flex items-center justify-center"
-            ]}">
-                <svg
-                    class="w-5 h-5 text-arizona-terracotta"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
+        {% Label }
+        <div class="px-3 sm:px-6 py-2 sm:py-4">
+            <div class="flex justify-center">
+                <div
+                    id="example-label"
+                    class="{[
+                        ~"bg-erlang-red px-2 sm:px-3 py-1 rounded-full text-white ",
+                        ~"text-xs font-semibold"
+                    ]}"
                 >
-                    <path
-                        fill-rule="evenodd"
-                        d="{[
-                            ~"M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 ",
-                            ~"011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 ",
-                            ~"1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 ",
-                            ~"010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z"
-                        ]}"
-                        clip-rule="evenodd"
-                    ></path>
-                </svg>
-            </div>
-            <h3 class="text-2xl font-bold text-pearl">Ready to Start Building?</h3>
-        </div>
-
-        <div class="grid sm:grid-cols-2 gap-4">
-            <div class="space-y-4">
-                {arizona_template:render_list(fun(Item) ->
-                    arizona_template:from_string(~"""
-                    {arizona_template:render_stateless(Module, next_step, Item)}
-                    """)
-                end, [
-                    #{
-                        prefix_text => ~"Edit ",
-                        filename => ~"src/erlang_website_view.erl",
-                        suffix_text => ~" to customize this page"
-                    },
-                    #{
-                        prefix_text => ~"Configure routes in ",
-                        filename => ~"config/sys.config"
-                    }
-                ])}
-            </div>
-
-            <div class="space-y-4">
-                {arizona_template:render_list(fun(Item) ->
-                    arizona_template:from_string(~"""
-                    {arizona_template:render_stateless(Module, next_step, Item)}
-                    """)
-                end, [
-                    #{
-                        prefix_text => ~"Customize styles in ",
-                        filename => ~"assets/css/app.css"
-                    },
-                    #{
-                        prefix_text => ~"Add interactivity in ",
-                        filename => ~"assets/js/main.js"
-                    }
-                ])}
+                    {maps:get(label, hd(examples()))}
+                </div>
             </div>
         </div>
     </div>
     """").
 
-next_step(Bindings) ->
+carousel_button(Bindings) ->
     arizona_template:from_string(~"""
-    <div class="{[
-        ~"group flex items-start gap-3 p-4 rounded-lg ",
-        ~"hover:bg-obsidian/30 transition-colors duration-200"
-    ]}">
-        <div class="w-2 h-2 bg-arizona-terracotta rounded-full mt-2"></div>
-        <div>
-            <span class="text-silver/90">
-                {arizona_template:get_binding(prefix_text, Bindings)}
-            </span>
-            <code class="{[
-                ~"bg-obsidian/60 px-2 py-1 rounded text-arizona-gold font-mono text-sm ",
-                ~"border border-arizona-terracotta/20 group-hover:border-arizona-terracotta/40 ",
-                ~"transition-colors duration-200 group-hover:shadow-sm ",
-                ~"group-hover:shadow-arizona-terracotta/20"
-            ]}">
-                {arizona_template:get_binding(filename, Bindings)}
-            </code>
-            <span class="text-silver/90">
-                {arizona_template:get_binding(suffix_text, Bindings, ~"")}
-            </span>
-        </div>
-    </div>
+    <button
+        type="button"
+        class="{[
+            ~"carousel-arrow absolute top-1/2 -translate-y-1/2 z-10 w-10 h-10 ",
+            ~"bg-gray-800 hover:bg-gray-700 rounded-full flex items-center justify-center ",
+            ~"text-white transition-smooth cursor-pointer ",
+            arizona_template:get_binding(class, Bindings)
+        ]}"
+        onclick="{arizona_template:get_binding(onclick, Bindings)}"
+    >
+        {arizona_template:render_stateless(erlang_website_components, icon, #{
+            icon => arizona_template:get_binding(icon, Bindings)
+        })}
+    </button>
     """).
 
-quick_link_card(Bindings) ->
+carousel_item(Bindings) ->
+    arizona_template:from_string(~""""
+    <div
+        class="{[
+            ~"carousel-slide ",
+            arizona_template:get_binding(overflow_class, Bindings)
+        ]}"
+        data-file="{arizona_template:get_binding(file, Bindings)}"
+        data-label="{arizona_template:get_binding(label, Bindings)}"
+    >
+        <pre class="text-xs sm:text-sm leading-relaxed !m-0 h-full"><code class="language-erlang whitespace-pre">{
+            html_encode(arizona_template:get_binding(code, Bindings))
+        }</code></pre>
+    </div>
+    """").
+
+what_is_erlang(_Bindings) ->
+    section_card(#{
+        title => ~"What is Erlang?",
+        text => arizona_template:from_string(~"""
+        <p>
+            Erlang is a programming language used to build massively scalable
+            soft real-time systems with requirements on
+            <strong class="text-erlang-red">high availability</strong>.
+            Some of its uses are in telecoms, banking, e-commerce,
+            computer telephony and instant messaging.
+        </p>
+        <p>
+            Erlang's runtime system has built-in support for
+            <strong class="text-erlang-red">concurrency</strong>,
+            <strong class="text-erlang-red">distribution</strong> and
+            <strong class="text-erlang-red">fault tolerance</strong>.
+        </p>
+        """),
+        label => ~"Erlang Quickstart",
+        href => ~"#"
+    }).
+
+what_is_otp(_Bindings) ->
+    section_card(#{
+        title => ~"What is OTP?",
+        text => arizona_template:from_string(~"""
+        <p>
+            OTP is set of Erlang libraries and design principles providing middle-ware to
+            develop these systems. It includes its own distributed database, applications
+            to interface towards other languages, debugging and release handling tools.
+        </p>
+        """),
+        label => ~"Getting Started with OTP",
+        href => ~"#"
+    }).
+
+section_card(Bindings) ->
+    erlang_website_components:card(#{
+        tag => ~"section",
+        content => arizona_template:from_string(~""""
+        <h2 class="text-3xl font-bold text-white mb-6">
+            {arizona_template:get_binding(title, Bindings)}
+        </h2>
+        <div class="space-y-4 text-gray-300 leading-relaxed">
+            {arizona_template:render_slot(arizona_template:get_binding(text, Bindings))}
+            <div class="pt-4 text-erlang-red">
+                {arizona_template:render_stateless(erlang_website_components, link, #{
+                    href => arizona_template:get_binding(href, Bindings),
+                    label => arizona_template:get_binding(label, Bindings),
+                    icon => chevron_right,
+                    extra_classes => ~"hover:text-erlang-red-light"
+                })}
+            </div>
+        </div>
+        """")
+    }).
+
+news_section(_Bindings) ->
     Module = ?MODULE,
     arizona_template:from_string(~""""
-    <a
-        href="{arizona_template:get_binding(href, Bindings)}"
-        target="_blank"
-        class="{[
-            ~"group bg-obsidian/60 rounded-xl p-6 hover:bg-obsidian/80 transition-all ",
-            ~"duration-300 hover:scale-105 hover:shadow-lg hover:shadow-arizona-terracotta/20 ",
-            ~"border border-transparent hover:border-arizona-terracotta/40 cursor-pointer ",
-            ~"transform hover:-translate-y-1 block {arizona_template:get_binding(extra_classes, Bindings, ~\"\")}"
-        ]}">
-        <div class="flex items-center justify-between mb-4">
-            <div class="{[
-                ~"w-12 h-12 bg-arizona-terracotta/20 rounded-lg flex items-center justify-center ",
-                ~"group-hover:bg-arizona-terracotta/30 transition-colors duration-300"
-            ]}">
-                {arizona_template:get_binding(icon, Bindings)}
-            </div>
-            {arizona_template:render_stateless(Module, arrow_icon, #{})}
+    <section>
+        <h2 class="text-3xl font-bold text-white mb-8">News</h2>
+        <div class="space-y-6">
+            {arizona_template:render_list(fun(Article) ->
+                arizona_template:from_string(~"""
+                {arizona_template:render_stateless(Module, news_article, Article)}
+                """)
+            end, articles())}
         </div>
-        <h3 class="{[
-            ~"text-arizona-terracotta font-bold text-lg mb-2 group-hover:text-arizona-gold ",
-            ~"transition-colors duration-300"
-        ]}">
-            {arizona_template:get_binding(title, Bindings)}
-        </h3>
-        <p class="{[
-            ~"text-sm text-silver/80 group-hover:text-silver ",
-            ~"transition-colors duration-300"
-        ]}">
-            {arizona_template:get_binding(description, Bindings)}
-        </p>
-    </a>
+    </section>
     """").
 
-arrow_icon(_Bindings) ->
+news_article(Bindings) ->
+    erlang_website_components:card(#{
+        tag => ~"article",
+        content =>
+            arizona_template:from_string(~""""
+            <h3 class="text-xl font-semibold text-erlang-red mb-2">
+                {arizona_template:render_stateless(erlang_website_components, link, #{
+                    label => arizona_template:get_binding(title, Bindings),
+                    href => arizona_template:get_binding(href, Bindings),
+                    extra_classes => ~"hover:text-erlang-red-light"
+                })}
+            </h3>
+            <p class="text-gray-400 text-sm mb-3">
+                {arizona_template:get_binding(date, Bindings)} by
+                {arizona_template:get_binding(author, Bindings)}
+            </p>
+            <p class="text-gray-300 leading-relaxed">
+                {arizona_template:get_binding(summary, Bindings)}
+            </p>
+            """")
+    }).
+
+participate_section(_Bindings) ->
     arizona_template:from_string(~"""
-    <div class="{[
-        ~"w-6 h-6 text-arizona-terracotta opacity-0 group-hover:opacity-100 ",
-        ~"transition-opacity duration-300"
-    ]}">
-        <svg fill="currentColor" viewBox="0 0 20 20">
-            <path
-                fill-rule="evenodd"
-                d="{[
-                    ~"M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 ",
-                    ~"1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                ]}"
-                clip-rule="evenodd"
-            ></path>
-        </svg>
-    </div>
+    <section class="bg-gray-900 rounded-2xl p-8 border border-gray-700">
+        <h2 class="text-3xl font-bold text-white mb-6">
+            Participate
+        </h2>
+        <div class="text-center">
+            <div class="inline-flex items-center justify-center w-24 h-24 bg-white rounded-full mb-6">
+                <img src="images/eef-logo.svg" alt="Erlang Ecosystem Foundation" class="w-16 h-16" />
+            </div>
+            <p class="text-gray-300 leading-relaxed mb-6">
+                Join the Erlang Ecosystem Foundation and be part of the community
+                that builds the future of concurrent, fault-tolerant systems.
+            </p>
+            {arizona_template:render_stateless(erlang_website_components, link_button, #{
+                label => ~"Join the Community",
+                href => ~"#"
+            })}
+        </div>
+    </section>
     """).
+
+% Internal functions
+
+examples() ->
+    [
+        #{
+            index => 0,
+            file => ~"factorial.erl",
+            label => ~"Functional programming",
+            code => ~"""
+            %% Pattern matching for control-flow
+            fact(0) -> 1;
+            fact(N) -> N * fact(N-1).
+
+            %% Recursion to create loops
+            > fact(10).
+            3628800
+            > [{I, fact(I)} || I <- lists:seq(1,10)].
+            [{1, 1}, {2, 2}, {3, 6}, {4, 24}, {5, 120}, {6, 720},
+             {7, 5040}, {8, 40320}, {9, 362880}, {10, 3628800}]
+            """
+        },
+        #{
+            index => 1,
+            file => ~"high_order.erl",
+            label => ~"Higher-order functions",
+            code => ~"""
+            %% Immutable variables
+            > Fruits = ["banana","monkey","jungle"].
+            ["banana","monkey","jungle"]
+            %% Map values using stdlib functions
+            > lists:map(fun string:uppercase/1, Fruits).
+            ["BANANA","MONKEY","JUNGLE"]
+            %% Fold over lists using custom functions
+            > lists:foldl(fun(Str, Cnt) ->
+                  string:length(Str) + Cnt
+              end, 0, Fruits).
+            18
+            """
+        },
+        #{
+            index => 2,
+            file => ~"processes.erl",
+            label => ~"Lightweight processes",
+            code => ~"""
+            %% Get own process id
+            > Parent = self().
+            <0.376.0>
+            > Child = spawn(fun() ->
+                  receive go -> Parent ! lists:seq(1,100) end
+              end).
+            <0.930.0>
+            %% Send message to child
+            > Child ! go.
+            go
+             %% Receive response from child
+            > receive Reply -> Reply end.
+            [1,2,3,4,5,6,7,8,9,10,11|...]
+            """
+        },
+        #{
+            index => 3,
+            file => ~"parallel.erl",
+            label => ~"Parallel map-reduce to find even numbers",
+            code => ~"""
+            -spec even(list(integer())) -> list(integer()).
+            even(Numbers) ->
+              mapreduce(Numbers, fun(Number) -> Number rem 2 == 0 end).
+            mapreduce(Numbers, Function) ->
+              Parent = self(),
+              [spawn(fun() -> Parent ! {Number, Function(Number)} end)
+               || Number <- Numbers],
+              lists:flatten(
+                [receive {Number, true} -> Number; _ -> [] end
+                 || Number <- Numbers]).
+            """
+        }
+    ].
+
+articles() ->
+    [
+        #{
+            title => ~"Erlang/OTP 28.0",
+            href => ~"#",
+            date => ~"May 21, 2025",
+            author => ~"Henrik Nord",
+            summary => ~"""
+            Erlang/OTP 28.0 is a new major release with new features,
+            improvements as well as a few incompatibilities.
+            """
+        },
+        #{
+            title => ~"Erlang/OTP 28 Highlights",
+            href => ~"#",
+            date => ~"May 20, 2025",
+            author => ~"Isabell Huang",
+            summary => ~"""
+            Erlang/OTP 28 is finally here. This blog post will introduce the new
+            features that we are most excited about.
+            """
+        },
+        #{
+            title => ~"Erlang/OTP 28.0 Release Candidate 4",
+            href => ~"#",
+            date => ~"May 05, 2025",
+            author => ~"Björn Gustavsson",
+            summary => ~"Erlang/OTP 28.0-rc4 is the fourth release candidate for OTP 28."
+        }
+    ].
+
+%% HTML encoding helper for code examples
+html_encode(Text) ->
+    ReplacementList = [
+        {"&", "\\&amp;"},
+        {"<", "\\&lt;"},
+        {">", "\\&gt;"},
+        {"\"", "\\&quot;"},
+        {"'", "\\&#39;"}
+    ],
+    lists:foldl(fun({Pattern, Replacement}, Acc) ->
+        re:replace(Acc, Pattern, Replacement, [global, {return, binary}])
+    end, Text, ReplacementList).

@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Erlang - Practical functional programming for a parallel world. Build massively scalable soft real-time systems with fault tolerance.">
+    <meta
+        name="keywords"
+        content="Erlang, BEAM, OTP, functional programming, concurrent, fault-tolerant, scalable, real-time"
+    >
+    <meta name="author" content="Erlang Programming Language">
+
+    
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="The Erlang Programming Language">
+    <meta property="og:description" content="Erlang - Practical functional programming for a parallel world. Build massively scalable soft real-time systems with fault tolerance.">
+
+    
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="The Erlang Programming Language">
+    <meta property="twitter:description" content="Erlang - Practical functional programming for a parallel world. Build massively scalable soft real-time systems with fault tolerance.">
+
+    <title>The Erlang Programming Language</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="assets/app.css">
+    <script type="module" src="assets/app.js" defer></script>
+    <script src="assets/prism.js" defer></script>
+    <script src="assets/dev.js" type="module" async></script>
+
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap"
+        rel="stylesheet"
+    >
+</head>
+<body class="bg-gray-950 text-gray-100 antialiased font-['Inter'] min-h-screen">
+    
+    <header class="sticky top-0 z-50 bg-gray-950/95 backdrop-blur-sm border-b border-gray-800">
+    <nav class="max-w-7xl mx-auto px-6 py-4 relative z-50">
+        <div class="flex items-center justify-between">
+            
+            <div class="flex items-center space-x-3">
+    <div class="w-8 h-8 bg-erlang-red rounded-lg flex items-center justify-center">
+        <span class="text-white font-bold text-3xl">e</span>
+    </div>
+    <span class="text-xl font-bold text-white">Erlang</span>
+</div>
+
+            
+            <div class="hidden xl:flex items-center space-x-6">
+                <a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth text-gray-300 hover:text-erlang-red"
+>
+    Download
+    
+</a><a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth text-gray-300 hover:text-erlang-red"
+>
+    Documentation
+    
+</a><a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth text-gray-300 hover:text-erlang-red"
+>
+    Community
+    
+</a><a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth text-gray-300 hover:text-erlang-red"
+>
+    News
+    
+</a><a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth text-gray-300 hover:text-erlang-red"
+>
+    Blog
+    
+</a><a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth text-gray-300 hover:text-erlang-red"
+>
+    Security
+    
+</a><a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth text-gray-300 hover:text-erlang-red"
+>
+    EEP
+    
+</a><a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth text-gray-300 hover:text-erlang-red"
+>
+    About
+    
+</a>
+            </div>
+
+            
+            <div class="hidden md:flex items-center lg:flex-1 lg:justify-end xl:flex-none xl:justify-start">
+                <div class="relative">
+                    <input
+                        type="search"
+                        placeholder="Search erlang.org"
+                        class="w-48 lg:w-56 xl:w-64 pl-4 pr-10 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-300 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-erlang-red focus:border-transparent transition-smooth"
+                    />
+                    <button
+                        type="submit"
+                        class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-erlang-red transition-smooth"
+                    >
+                        <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+    ></path>
+</svg>
+                    </button>
+                </div>
+            </div>
+
+            
+            <button
+                id="mobile-menu-button"
+                class="xl:hidden relative z-50 flex items-center justify-center w-10 h-10 text-gray-300 hover:text-white hover:bg-gray-700 border border-transparent hover:border-gray-600 rounded-lg cursor-pointer transition-smooth"
+            >
+                <div class="hamburger-lines">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </div>
+            </button>
+        </div>
+    </nav>
+
+    
+    <div
+        id="mobile-menu"
+        class="absolute inset-x-0 top-full z-40 bg-gray-950/95 backdrop-blur-sm border-b border-gray-800 xl:hidden transform transition-all duration-300 ease-in-out translate-y-[-100%] opacity-0"
+    >
+        <nav class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex flex-col">
+                <div class="py-3 px-2 border-b border-gray-800 last:border-b-0">
+    <a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth block text-gray-300 hover:text-erlang-red"
+>
+    Download
+    
+</a>
+</div><div class="py-3 px-2 border-b border-gray-800 last:border-b-0">
+    <a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth block text-gray-300 hover:text-erlang-red"
+>
+    Documentation
+    
+</a>
+</div><div class="py-3 px-2 border-b border-gray-800 last:border-b-0">
+    <a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth block text-gray-300 hover:text-erlang-red"
+>
+    Community
+    
+</a>
+</div><div class="py-3 px-2 border-b border-gray-800 last:border-b-0">
+    <a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth block text-gray-300 hover:text-erlang-red"
+>
+    News
+    
+</a>
+</div><div class="py-3 px-2 border-b border-gray-800 last:border-b-0">
+    <a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth block text-gray-300 hover:text-erlang-red"
+>
+    Blog
+    
+</a>
+</div><div class="py-3 px-2 border-b border-gray-800 last:border-b-0">
+    <a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth block text-gray-300 hover:text-erlang-red"
+>
+    Security
+    
+</a>
+</div><div class="py-3 px-2 border-b border-gray-800 last:border-b-0">
+    <a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth block text-gray-300 hover:text-erlang-red"
+>
+    EEP
+    
+</a>
+</div><div class="py-3 px-2 border-b border-gray-800 last:border-b-0">
+    <a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth block text-gray-300 hover:text-erlang-red"
+>
+    About
+    
+</a>
+</div>
+            </div>
+        </nav>
+    </div>
+</header>
+
+    
+    <div id="home" class="min-h-screen">
+    
+    <section class="relative bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 overflow-hidden">
+    
+    <div class="absolute bg-grid-pattern opacity-5"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 lg:py-32">
+        <div class="grid lg:grid-cols-2 gap-16 items-center">
+            
+            <div class="text-center lg:text-left">
+                <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-white mb-6 sm:mb-8 leading-tight">
+                    Practical
+                    <span class="text-erlang-red">functional</span>
+                    programming
+                    <span class="block text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-gray-300 mt-2 sm:mt-4">
+                        for a parallel world
+                    </span>
+                </h1>
+
+                <p class="text-lg sm:text-xl text-gray-300 mb-8 sm:mb-10 leading-relaxed max-w-2xl px-4 sm:px-0">
+                    Build massively scalable soft real-time systems with requirements on
+                    high availability using Erlang's fault-tolerant design.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a
+    href="#"
+    class="items-center justify-center transition-smooth px-8 py-4 font-semibold rounded-lg cursor-pointer text-white hover:shadow-lg [&:hover]:bg-erlang-red-dark [&:not(:hover)]:bg-erlang-red hidden sm:inline-flex"
+>
+    Get Erlang/OTP 28
+    <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4 4m0 0l-4-4m4 4V4"
+    ></path>
+</svg>
+</a>
+                    <a
+    href="#"
+    class="items-center justify-center transition-smooth px-8 py-4 font-semibold rounded-lg cursor-pointer border-2 border-gray-600 hover:border-erlang-red text-gray-300 hover:text-erlang-red inline-flex"
+>
+    Learn More
+    
+</a>
+                </div>
+            </div>
+
+            
+            <div class="relative overflow-hidden">
+                <div
+    id="code-carousel"
+    class="relative bg-gray-900 rounded-2xl border border-gray-700 overflow-hidden shadow-2xl"
+>
+    
+    <button
+    type="button"
+    class="carousel-arrow absolute top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-gray-800 hover:bg-gray-700 rounded-full flex items-center justify-center text-white transition-smooth cursor-pointer left-4"
+    onclick="prevExample()"
+>
+    <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M15 19l-7-7 7-7"
+    ></path>
+</svg>
+</button>
+    <button
+    type="button"
+    class="carousel-arrow absolute top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-gray-800 hover:bg-gray-700 rounded-full flex items-center justify-center text-white transition-smooth cursor-pointer right-4"
+    onclick="nextExample()"
+>
+    <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M9 5l7 7-7 7"
+    ></path>
+</svg>
+</button>
+
+    
+    <div class="flex items-center px-6 py-4 bg-gray-800 border-b border-gray-700">
+        <div class="flex space-x-2">
+            <div class="w-3 h-3 bg-red-500 rounded-full"></div><div class="w-3 h-3 bg-yellow-500 rounded-full"></div><div class="w-3 h-3 bg-green-500 rounded-full"></div>
+        </div>
+        <div
+            id="file-name"
+            class="flex-1 text-center text-gray-400 text-sm font-mono"
+        >
+            factorial.erl
+        </div>
+    </div>
+
+    
+    <div class="relative overflow-hidden">
+        <div class="carousel-slides" id="carousel-slides">
+            <div
+    class="carousel-slide overflow-x-auto"
+    data-file="factorial.erl"
+    data-label="Functional programming"
+>
+    <pre class="text-xs sm:text-sm leading-relaxed !m-0 h-full"><code class="language-erlang whitespace-pre">%% Pattern matching for control-flow
+fact(0) -&gt; 1;
+fact(N) -&gt; N * fact(N-1).
+
+%% Recursion to create loops
+&gt; fact(10).
+3628800
+&gt; [{I, fact(I)} || I &lt;- lists:seq(1,10)].
+[{1, 1}, {2, 2}, {3, 6}, {4, 24}, {5, 120}, {6, 720},
+ {7, 5040}, {8, 40320}, {9, 362880}, {10, 3628800}]</code></pre>
+</div><div
+    class="carousel-slide overflow-hidden"
+    data-file="high_order.erl"
+    data-label="Higher-order functions"
+>
+    <pre class="text-xs sm:text-sm leading-relaxed !m-0 h-full"><code class="language-erlang whitespace-pre">%% Immutable variables
+&gt; Fruits = [&quot;banana&quot;,&quot;monkey&quot;,&quot;jungle&quot;].
+[&quot;banana&quot;,&quot;monkey&quot;,&quot;jungle&quot;]
+%% Map values using stdlib functions
+&gt; lists:map(fun string:uppercase/1, Fruits).
+[&quot;BANANA&quot;,&quot;MONKEY&quot;,&quot;JUNGLE&quot;]
+%% Fold over lists using custom functions
+&gt; lists:foldl(fun(Str, Cnt) -&gt;
+      string:length(Str) + Cnt
+  end, 0, Fruits).
+18</code></pre>
+</div><div
+    class="carousel-slide overflow-hidden"
+    data-file="processes.erl"
+    data-label="Lightweight processes"
+>
+    <pre class="text-xs sm:text-sm leading-relaxed !m-0 h-full"><code class="language-erlang whitespace-pre">%% Get own process id
+&gt; Parent = self().
+&lt;0.376.0&gt;
+&gt; Child = spawn(fun() -&gt;
+      receive go -&gt; Parent ! lists:seq(1,100) end
+  end).
+&lt;0.930.0&gt;
+%% Send message to child
+&gt; Child ! go.
+go
+ %% Receive response from child
+&gt; receive Reply -&gt; Reply end.
+[1,2,3,4,5,6,7,8,9,10,11|...]</code></pre>
+</div><div
+    class="carousel-slide overflow-hidden"
+    data-file="parallel.erl"
+    data-label="Parallel map-reduce to find even numbers"
+>
+    <pre class="text-xs sm:text-sm leading-relaxed !m-0 h-full"><code class="language-erlang whitespace-pre">-spec even(list(integer())) -&gt; list(integer()).
+even(Numbers) -&gt;
+  mapreduce(Numbers, fun(Number) -&gt; Number rem 2 == 0 end).
+mapreduce(Numbers, Function) -&gt;
+  Parent = self(),
+  [spawn(fun() -&gt; Parent ! {Number, Function(Number)} end)
+   || Number &lt;- Numbers],
+  lists:flatten(
+    [receive {Number, true} -&gt; Number; _ -&gt; [] end
+     || Number &lt;- Numbers]).</code></pre>
+</div>
+        </div>
+    </div>
+
+    
+    <div class="flex justify-center space-x-2 p-4 bg-gray-850">
+        <button
+    type="button"
+    class="carousel-dot w-2 h-2 rounded-full transition-smooth cursor-pointer bg-erlang-red active"
+    onclick="goToExample(0)"
+></button><button
+    type="button"
+    class="carousel-dot w-2 h-2 rounded-full transition-smooth cursor-pointer bg-gray-600"
+    onclick="goToExample(1)"
+></button><button
+    type="button"
+    class="carousel-dot w-2 h-2 rounded-full transition-smooth cursor-pointer bg-gray-600"
+    onclick="goToExample(2)"
+></button><button
+    type="button"
+    class="carousel-dot w-2 h-2 rounded-full transition-smooth cursor-pointer bg-gray-600"
+    onclick="goToExample(3)"
+></button>
+    </div>
+
+    
+    <div class="px-3 sm:px-6 py-2 sm:py-4">
+        <div class="flex justify-center">
+            <div
+                id="example-label"
+                class="bg-erlang-red px-2 sm:px-3 py-1 rounded-full text-white text-xs font-semibold"
+            >
+                Functional programming
+            </div>
+        </div>
+    </div>
+</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    
+    <main class="max-w-7xl mx-auto px-6 py-16 grid lg:grid-cols-2 gap-16">
+        
+        <div class="space-y-16">
+            <section>
+    <h2 class="text-3xl font-bold text-white mb-8">News</h2>
+    <div class="space-y-6">
+        <article class="bg-gray-900 rounded-2xl p-8 border border-gray-700 hover:border-gray-600 transition-smooth">
+    <h3 class="text-xl font-semibold text-erlang-red mb-2">
+    <a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth hover:text-erlang-red-light"
+>
+    Erlang/OTP 28.0
+    
+</a>
+</h3>
+<p class="text-gray-400 text-sm mb-3">
+    May 21, 2025 by
+    Henrik Nord
+</p>
+<p class="text-gray-300 leading-relaxed">
+    Erlang/OTP 28.0 is a new major release with new features,
+improvements as well as a few incompatibilities.
+</p>
+</article><article class="bg-gray-900 rounded-2xl p-8 border border-gray-700 hover:border-gray-600 transition-smooth">
+    <h3 class="text-xl font-semibold text-erlang-red mb-2">
+    <a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth hover:text-erlang-red-light"
+>
+    Erlang/OTP 28 Highlights
+    
+</a>
+</h3>
+<p class="text-gray-400 text-sm mb-3">
+    May 20, 2025 by
+    Isabell Huang
+</p>
+<p class="text-gray-300 leading-relaxed">
+    Erlang/OTP 28 is finally here. This blog post will introduce the new
+features that we are most excited about.
+</p>
+</article><article class="bg-gray-900 rounded-2xl p-8 border border-gray-700 hover:border-gray-600 transition-smooth">
+    <h3 class="text-xl font-semibold text-erlang-red mb-2">
+    <a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth hover:text-erlang-red-light"
+>
+    Erlang/OTP 28.0 Release Candidate 4
+    
+</a>
+</h3>
+<p class="text-gray-400 text-sm mb-3">
+    May 05, 2025 by
+    Björn Gustavsson
+</p>
+<p class="text-gray-300 leading-relaxed">
+    Erlang/OTP 28.0-rc4 is the fourth release candidate for OTP 28.
+</p>
+</article>
+    </div>
+</section>
+        </div>
+
+        
+        <div class="space-y-16">
+            <section class="bg-gray-900 rounded-2xl p-8 border border-gray-700 hover:border-gray-600 transition-smooth">
+    <h2 class="text-3xl font-bold text-white mb-6">
+    What is Erlang?
+</h2>
+<div class="space-y-4 text-gray-300 leading-relaxed">
+    <p>
+    Erlang is a programming language used to build massively scalable
+    soft real-time systems with requirements on
+    <strong class="text-erlang-red">high availability</strong>.
+    Some of its uses are in telecoms, banking, e-commerce,
+    computer telephony and instant messaging.
+</p>
+<p>
+    Erlang's runtime system has built-in support for
+    <strong class="text-erlang-red">concurrency</strong>,
+    <strong class="text-erlang-red">distribution</strong> and
+    <strong class="text-erlang-red">fault tolerance</strong>.
+</p>
+    <div class="pt-4 text-erlang-red">
+        <a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth hover:text-erlang-red-light"
+>
+    Erlang Quickstart
+    <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M9 5l7 7-7 7"
+    ></path>
+</svg>
+</a>
+    </div>
+</div>
+</section>
+            <section class="bg-gray-900 rounded-2xl p-8 border border-gray-700 hover:border-gray-600 transition-smooth">
+    <h2 class="text-3xl font-bold text-white mb-6">
+    What is OTP?
+</h2>
+<div class="space-y-4 text-gray-300 leading-relaxed">
+    <p>
+    OTP is set of Erlang libraries and design principles providing middle-ware to
+    develop these systems. It includes its own distributed database, applications
+    to interface towards other languages, debugging and release handling tools.
+</p>
+    <div class="pt-4 text-erlang-red">
+        <a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth hover:text-erlang-red-light"
+>
+    Getting Started with OTP
+    <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M9 5l7 7-7 7"
+    ></path>
+</svg>
+</a>
+    </div>
+</div>
+</section>
+            <section class="bg-gray-900 rounded-2xl p-8 border border-gray-700">
+    <h2 class="text-3xl font-bold text-white mb-6">
+        Participate
+    </h2>
+    <div class="text-center">
+        <div class="inline-flex items-center justify-center w-24 h-24 bg-white rounded-full mb-6">
+            <img src="images/eef-logo.svg" alt="Erlang Ecosystem Foundation" class="w-16 h-16" />
+        </div>
+        <p class="text-gray-300 leading-relaxed mb-6">
+            Join the Erlang Ecosystem Foundation and be part of the community
+            that builds the future of concurrent, fault-tolerant systems.
+        </p>
+        <a
+    href="#"
+    class="items-center justify-center transition-smooth px-8 py-4 font-semibold rounded-lg cursor-pointer text-white hover:shadow-lg [&:hover]:bg-erlang-red-dark [&:not(:hover)]:bg-erlang-red inline-flex"
+>
+    Join the Community
+    
+</a>
+    </div>
+</section>
+        </div>
+    </main>
+</div>
+
+    
+    <footer class="bg-gray-900 border-t border-gray-800 mt-16">
+    <div class="max-w-7xl mx-auto px-6 py-12">
+        <div class="grid md:grid-cols-4 gap-8">
+            <div class="space-y-6">
+                <div class="flex items-center space-x-3">
+    <div class="w-8 h-8 bg-erlang-red rounded-lg flex items-center justify-center">
+        <span class="text-white font-bold text-3xl">e</span>
+    </div>
+    <span class="text-xl font-bold text-white">Erlang</span>
+</div>
+                <p class="text-gray-400 leading-relaxed">
+                    Practical functional programming for a parallel world.
+                </p>
+            </div>
+
+            <div>
+    <h4 class="text-white font-semibold mb-4">
+        Learn
+    </h4>
+    <ul class="space-y-2 text-gray-400">
+        <li>
+    <a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth text-gray-300 hover:text-erlang-red"
+>
+    Getting Started
+    
+</a>
+</li><li>
+    <a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth text-gray-300 hover:text-erlang-red"
+>
+    Documentation
+    
+</a>
+</li><li>
+    <a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth text-gray-300 hover:text-erlang-red"
+>
+    Examples
+    
+</a>
+</li><li>
+    <a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth text-gray-300 hover:text-erlang-red"
+>
+    Books
+    
+</a>
+</li>
+    </ul>
+</div><div>
+    <h4 class="text-white font-semibold mb-4">
+        Community
+    </h4>
+    <ul class="space-y-2 text-gray-400">
+        <li>
+    <a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth text-gray-300 hover:text-erlang-red"
+>
+    Forums
+    
+</a>
+</li><li>
+    <a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth text-gray-300 hover:text-erlang-red"
+>
+    Mailing Lists
+    
+</a>
+</li><li>
+    <a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth text-gray-300 hover:text-erlang-red"
+>
+    Slack
+    
+</a>
+</li><li>
+    <a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth text-gray-300 hover:text-erlang-red"
+>
+    Events
+    
+</a>
+</li>
+    </ul>
+</div><div>
+    <h4 class="text-white font-semibold mb-4">
+        Project
+    </h4>
+    <ul class="space-y-2 text-gray-400">
+        <li>
+    <a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth text-gray-300 hover:text-erlang-red"
+>
+    Download
+    
+</a>
+</li><li>
+    <a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth text-gray-300 hover:text-erlang-red"
+>
+    Security
+    
+</a>
+</li><li>
+    <a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth text-gray-300 hover:text-erlang-red"
+>
+    EEP
+    
+</a>
+</li><li>
+    <a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth text-gray-300 hover:text-erlang-red"
+>
+    GitHub
+    
+</a>
+</li>
+    </ul>
+</div>
+        </div>
+
+        <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+            <p class="text-gray-400 text-sm text-center sm:text-left">
+                <span class="block sm:inline">© 2025 Erlang Programming Language</span>
+                <span class="hidden sm:inline mx-2">•</span>
+                <span class="block sm:inline">Built with Arizona Framework 🌵</span>
+            </p>
+            <div class="flex space-x-6 mt-4 md:mt-0">
+                <a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth text-gray-400 hover:text-erlang-red"
+>
+    
+    <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+    ></path>
+</svg>
+</a><a
+    href="#"
+    class="inline-flex items-center justify-center transition-smooth text-gray-400 hover:text-erlang-red"
+>
+    
+    <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"
+    ></path>
+</svg>
+</a>
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+</html>
