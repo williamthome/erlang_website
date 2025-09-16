@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./prism.css";
 
 @source "src/**/*.erl";
 
@@ -14,25 +15,73 @@
 }
 
 /* Custom utilities */
-.text-erlang-red { color: var(--color-erlang-red); }
-.text-erlang-red-dark { color: var(--color-erlang-red-dark); }
-.text-erlang-red-light { color: var(--color-erlang-red-light); }
-.text-erlang-gray { color: var(--color-erlang-gray); }
-.text-erlang-gray-light { color: var(--color-erlang-gray-light); }
-.text-erlang-blue { color: var(--color-erlang-blue); }
-.text-erlang-green { color: var(--color-erlang-green); }
+.text-erlang-red {
+  color: var(--color-erlang-red);
+}
 
-.bg-erlang-red { background-color: var(--color-erlang-red); }
-.bg-erlang-red-dark { background-color: var(--color-erlang-red-dark); }
-.bg-erlang-red-light { background-color: var(--color-erlang-red-light); }
-.bg-erlang-gray { background-color: var(--color-erlang-gray); }
-.bg-erlang-gray-light { background-color: var(--color-erlang-gray-light); }
-.bg-erlang-blue { background-color: var(--color-erlang-blue); }
-.bg-erlang-green { background-color: var(--color-erlang-green); }
+.text-erlang-red-dark {
+  color: var(--color-erlang-red-dark);
+}
 
-.border-erlang-red { border-color: var(--color-erlang-red); }
-.border-erlang-red-dark { border-color: var(--color-erlang-red-dark); }
-.border-erlang-red-light { border-color: var(--color-erlang-red-light); }
+.text-erlang-red-light {
+  color: var(--color-erlang-red-light);
+}
+
+.text-erlang-gray {
+  color: var(--color-erlang-gray);
+}
+
+.text-erlang-gray-light {
+  color: var(--color-erlang-gray-light);
+}
+
+.text-erlang-blue {
+  color: var(--color-erlang-blue);
+}
+
+.text-erlang-green {
+  color: var(--color-erlang-green);
+}
+
+.bg-erlang-red {
+  background-color: var(--color-erlang-red);
+}
+
+.bg-erlang-red-dark {
+  background-color: var(--color-erlang-red-dark);
+}
+
+.bg-erlang-red-light {
+  background-color: var(--color-erlang-red-light);
+}
+
+.bg-erlang-gray {
+  background-color: var(--color-erlang-gray);
+}
+
+.bg-erlang-gray-light {
+  background-color: var(--color-erlang-gray-light);
+}
+
+.bg-erlang-blue {
+  background-color: var(--color-erlang-blue);
+}
+
+.bg-erlang-green {
+  background-color: var(--color-erlang-green);
+}
+
+.border-erlang-red {
+  border-color: var(--color-erlang-red);
+}
+
+.border-erlang-red-dark {
+  border-color: var(--color-erlang-red-dark);
+}
+
+.border-erlang-red-light {
+  border-color: var(--color-erlang-red-light);
+}
 
 /* Smooth transitions */
 .transition-smooth {
@@ -43,11 +92,13 @@
 .carousel-slides {
   display: flex;
   transition: transform 0.5s ease-in-out;
-  width: 300%; /* 3 slides * 100% each */
+  width: 300%;
+  /* 3 slides * 100% each */
 }
 
 .carousel-slide {
-  flex: 0 0 33.333333%; /* Each slide takes 1/3 of container width */
+  flex: 0 0 33.333333%;
+  /* Each slide takes 1/3 of container width */
 }
 
 .carousel-dot.active {
