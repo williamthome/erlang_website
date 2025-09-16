@@ -1,7 +1,3 @@
-import Arizona from '@arizona-framework/client';
-globalThis.arizona = new Arizona({ logLevel: 'debug' });
-arizona.connect({ wsPath: '/live' });
-
 // Code Carousel functionality
 let currentSlide = 0;
 const slides = document.querySelectorAll('.carousel-slide');

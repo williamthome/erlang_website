@@ -12,7 +12,7 @@ render(Bindings) ->
         ~"Erlang - Practical functional programming for a parallel world. ",
         ~"Build massively scalable soft real-time systems with fault tolerance."
     ],
-    arizona_template:from_string(~"""
+    arizona_template:from_string(~""""
     <!DOCTYPE html>
     <html lang="en" class="h-full scroll-smooth">
     <head>
@@ -43,6 +43,16 @@ render(Bindings) ->
         <link rel="stylesheet" href="assets/app.css">
         <script type="module" src="assets/app.js" defer></script>
         <script src="assets/prism.js" defer></script>
+        {
+            case arizona_template:get_binding(env, Bindings, dev) of
+                dev ->
+                    ~"""
+                    <script src="assets/dev.js" type="module" async></script>
+                    """;
+                prod ->
+                    ~""
+            end
+        }
 
         {% Modern fonts }
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -67,7 +77,7 @@ render(Bindings) ->
         {arizona_template:render_stateless(Module, footer, #{})}
     </body>
     </html>
-    """).
+    """").
 
 header(_Bindings) ->
     Module = ?MODULE,
